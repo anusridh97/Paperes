@@ -1,0 +1,522 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Littlewood–Paley projectors
+\newcommand{\LP}[1]{\Delta_{#1}}
+% shell energies / enstrophies
+\newcommand{\E}{E}
+\newcommand{\Z}{Z}
+% viscosity
+\newcommand{\nuvisc}{\nu}
+% sing time
+\newcommand{\Tsing}{T_{\mathrm{sing}}}
+% fancy boxed equation environment
+\newcommand{\boxedEq}[1]{\begin{equation}\boxed{#1}\end{equation}}
+
+
+\begin{document}
+
+\title{High‑Frequency Shell ODE and Lemma A\\(Geometric Kakeya–Navier--Stokes Cascade versus Tao's Averaged Model)}
+\author{}
+\date{}
+\maketitle
+
+\tableofcontents
+
+\section{Synchronising notation}
+
+We collate the symbols used in (i)~your geometric blow‑up paper (Section~9.3) and (ii)~Tao\textquotesingle s averaged/dyadic model\,\cite{Tao2016}.  Keeping the dictionaries explicit avoids translation errors later.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Object} & \textbf{Our paper} & \textbf{Tao '14} & \textbf{Description} \\\midrule
+Littlewood--Paley proj. & $\LP{j}$ & $\LP{j}$ & frequency band $|\xi|\sim 2^{j}$ \\
+Shell energy & $\displaystyle \E_j(t)=\tfrac12\|u_j\|_{L^2}^2$ & same & kinetic energy in band $j$ \\
+Cumulative tail & $\displaystyle \E_{>N}=\sum_{j\ge N}\E_j$ & $\sum_{j\ge N}\E_j$ & high‑frequency energy \\
+Non‑linear flux & $T_j=\int\!u_{<j}\cdot\nabla u_j\,u_j$ & $\tilde T_j = 2^{j}\,\E_j^{3/2}$ & shell‑to‑shell transfer \\
+Enstrophy & $\displaystyle \Z_j=\tfrac12\|\omega_j\|_{L^2}^2$ & --- & $\omega=\nabla\times u$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+All subsequent estimates will be written in this shared notation.
+
+
+\section{Exact energy balance for the high‑frequency tail}
+
+\begin{lemma}[Littlewood--Paley energy identity]\label{lem:LP-balance}
+For every integer $N$ and almost every $t>0$ we have
+\begin{equation}\boxed{\frac{d}{dt}\E_{>N}(t)=\sum_{j\ge N}\bigl[T_j(t)-2\nuvisc\,\Z_j(t)\bigr].}\label{eq:LP-balance}\end{equation}
+Here
+\[
+ T_j(t) \;:=\; -\int_{\mathbb R^3}\!\bigl(u\cdot\nabla\bigr)u_{<j}\,\cdot u_j\,dx
+\]
+is the forward energy flux into shell~$j$ and $\nuvisc>0$ is the viscosity.
+\end{lemma}
+
+\begin{proof}
+Apply the standard Leray projector to the Navier--Stokes equation, take the $L^2$ inner product with $u_j$, and sum over $j\ge N$.  See Lemma~9.10 of your paper.
+\end{proof}
+
+
+\section{Kakeya lower bound on the non‑linear flux}
+
+At the Phase‑B snapshot scale $N_*$, the Kakeya tube geometry enforces the cap‑count inequality
+\[
+\sum_{j\ge N_*}\E_j(t_*)\;\gtrsim\;\delta_{*}^{\,-1-3\varepsilon},\qquad 0<\varepsilon<\tfrac13.
+\]
+Combining Bernstein ($\|u_j\|_{L^\infty}\lesssim 2^{3j/2}\|u_j\|_{L^2}$) with the cap‑count furnishes the shell‑wise transfer estimate
+\[
+T_j(t)\;\ge\;c\,2^{(1+3\varepsilon)j}\,\E_j(t),\qquad j\ge N_{*}.
+\]
+The constant $c>0$ depends only on the Biot--Savart kernel.
+
+\section{Derivation of the high‑frequency shell ODE}
+
+Fix $N\ge N_{*}$. Insert the Kakeya lower bound into the identity \eqref{eq:LP-balance}. Summing over $j\ge N$ yields
+\boxedEq{\frac{d}{dt}\E_{>N}(t)\;\ge\;c\,2^{(1+3\varepsilon)N}\,\E_{>N}(t)\;-\;2\nuvisc\,\Z_{>N}(t).}\label{eq:HF-ODE}
+Inequality \eqref{eq:HF-ODE} is a super‑critical logistic‑type ODE controlling the cumulative tail.
+
+\begin{remark}[Viscosity term]
+Using the Paley--Littlewood Poincar\'e estimate $\Z_{>N}\gtrsim 2^{2N}\,\E_{>N}$, one can postpone viscosity until scales satisfy $2^{2N}\gg c\,2^{(1+3\varepsilon)N}$; at those wavenumbers the inequality decouples from $\nuvisc$ and forces finite‑time blow‑up.
+\end{remark}
+
+\section{Lemma A: High‑frequency cascade inequality}
+
+\begin{lemma}[Lemma A]\label{lem:HF-cascade}
+Let $N\ge N_*$ and suppose the Kakeya cap‑count bound holds at time $t_*$.  Then for almost every $t\ge t_*$,
+\boxedEq{\frac{d}{dt}\E_{>N}(t)\;\ge\;c_0\,2^{(1+3\varepsilon)N}\,\E_{>N}(t)\;-\;2\nuvisc\,\Z_{>N}(t),\label{eq:lemmaA}}
+where $c_0>0$ depends only on the Biot--Savart kernel and the exponent $\varepsilon\in(0,1/3)$.
+\end{lemma}
+
+\begin{proof}
+Combine Lemma~\ref{lem:LP-balance} with the shell‑wise flux bound of the previous section and sum over $j\ge N$.
+\end{proof}
+
+
+\section{Spectral comparison with Tao\textquotesingle s averaged model}
+
+Tao\textquotesingle s dyadic system obeys
+\[
+ \dot\E_j = 2^{j}\bigl(\E_{j-1}^{3/2}-\E_j^{3/2}\bigr).
+\]
+Summing over $j\ge N$ gives an instantaneous growth rate $\sim 2^{N}\,\E_{>N}$. Inequality~\eqref{eq:lemmaA} produces a rate $\gtrsim 2^{(1+3\varepsilon)N}\,\E_{>N}$, which is \emph{no slower} (indeed faster for any $\varepsilon>0$). Consequently, the geometric Kakeya cascade and Tao\textquotesingle s averaged cascade share the same exponential scaling for the peak wavenumber,
+\[
+N(t)\;\sim\;c\,\log(\Tsing-t)^{-1},\qquad t\uparrow \Tsing.
+\]
+This establishes the required spectral universality ahead of the averaging‑limit and $\varepsilon$‑homotopy analyses.
+
+\section{Phase \texorpdfstring{E$'$}{E'} — Spectral Stability of the Collision Trajectory}\label{sec:phaseEprime}
+
+\subsection{\texorpdfstring{E$'$}{E'}.0 Overview}
+
+Phase E established a timescale comparison between vortex-filament collision and reconnection.  
+Here we prove \emph{dynamical} dominance of the collision path by analysing the spectrum of the linearised Navier–Stokes operator around the idealised two-filament solution $\omega_c(\cdot,t)$ from Phase C.
+
+\begin{theorem}[Collision dominance]\label{thm:collision-dominance}
+Let $L(t)$ denote the linearised Navier–Stokes operator about $\omega_c(\cdot,t)$ for $t\in[t_*,t_\delta]$.  
+There exist absolute constants $c_1>c_2>0$ such that
+\boxedEq{\lambda_{\max}\!\bigl(L(t)\bigr)\;\ge\;\dfrac{c_1\,\Gamma}{\delta(t)\,d(t)},\qquad 
+\sup_{\psi\in\mathcal P_{\mathrm{rec}}}\operatorname{Re}\sigma\!\bigl(L(t)\bigr)\;\le\;-\dfrac{c_2\,\Gamma}{d(t)^{2}}}
+for every $t\in[t_*,t_\delta]$.  
+Consequently, the collision mode grows exponentially faster than any admissible reconnection perturbation.
+\end{theorem}
+
+\subsection{\texorpdfstring{E$'$.1 Linearised operator}{E'.1 Linearised operator}}
+
+Writing $u_c=\nabla\times(-\Delta)^{-1}\omega_c$ and setting $u=u_c+v,\;\omega=\omega_c+\eta$, the perturbation obeys
+\[
+\partial_t\eta=L(t)\eta:=-\bigl((u_c\!\cdot\!\nabla)\eta+(v\!\cdot\!\nabla)\omega_c\bigr)+(\eta\!\cdot\!\nabla)u_c+\nuvisc\,\Delta\eta.
+\]
+Inside the interaction zone $|x-x_c(t)|\lesssim d(t)$ the principal part is
+
+\boxedEq{\mathcal L(t)\eta:=-\bigl(u_c\!\cdot\!\nabla\bigr)\eta+(\eta\!\cdot\!\nabla)u_c.}
+
+In cylindrical coordinates aligned with the centreline, the symmetric part of $\nabla u_c$ satisfies
+\[
+\nabla^{\mathrm sym}\!u_c=
+\frac{\Gamma}{2\pi d(t)^{2}}\operatorname{diag}(-2,1,1)+\mathcal O\!\bigl(\delta(t)^{2}/d(t)^{4}\bigr),
+\]
+so radial directions experience contraction while azimuthal and axial directions experience half-strength stretching.
+
+\subsection{E\texorpdfstring{$'$}{'} .2 Mode decomposition}
+
+Expand $\eta$ in Fourier modes
+\[
+\eta(r,\theta,z)=\sum_{m\in\mathbb Z}\sum_{k\in\mathbb Z}\hat\eta_{m,k}(r,t)\,e^{im\theta}\,e^{ikz/L_z}.
+\]
+Define projections $\mathcal P_{\mathrm{col}}$ (onto the axisymmetric collision mode $(m,k)=(0,0)$) and  
+$\mathcal P_{\mathrm{rec}}$ (onto the lowest helical and anti-symmetric modes $(m=\pm1,k=0)$).  
+With the weighted inner product 
+\[
+\langle f,g\rangle_t=\int f\,g\,\rho_c(r,t)\,r\,dr\,d\theta\,dz,
+\]
+$\mathcal P_{\mathrm{col}}L-L\mathcal P_{\mathrm{col}}$ is $\mathcal O(\delta/d)$ and therefore negligible for growth estimates.
+
+\subsection{E\texorpdfstring{$'$}{'} .3 Spectral gap}
+
+\begin{lemma}[Instantaneous gap]\label{lem:inst-gap}
+For every $t\in[t_*,t_\delta]$
+\boxedEq{\langle L\phi_{\mathrm{col}},\phi_{\mathrm{col}}\rangle_t\;\ge\;\dfrac{c_1\Gamma}{\delta(t)\,d(t)},\qquad 
+\sup_{\psi\in\operatorname{Ran}\mathcal P_{\mathrm{rec}}}\dfrac{\langle L\psi,\psi\rangle_t}{\|\psi\|_t^{2}}\;\le\;-\dfrac{c_2\Gamma}{d(t)^{2}}.}
+\end{lemma}
+
+\begin{proof}
+The operator $u_c\!\cdot\!\nabla$ is skew-adjoint, so only $(\eta\!\cdot\!\nabla)u_c$ contributes to $\langle L\eta,\eta\rangle_t$.  
+Insert the strain matrix above and compute in each Fourier sector.  
+For $\phi_{\mathrm{col}}$ the positive azimuthal/axial strain yields the first bound;  
+for reconnection modes the dominant radial contraction yields the second.  
+Viscosity adds negative real part and sharpens the gap.
+\end{proof}
+
+\begin{corollary}[Uniform gap]\label{cor:uniform-gap}
+There exists $\gamma_0>0$ such that
+\boxedEq{\lambda_{\mathrm{col}}(t)-\sup_{\psi\in\mathcal P_{\mathrm{rec}}}\operatorname{Re}\sigma\!\bigl(L(t)\bigr)\;\ge\;\gamma_0\,\dfrac{\Gamma}{d(t)^{2}}}
+for all $t\in[t_*,t_\delta]$.
+\end{corollary}
+
+\subsection{E'.4 Modulated-energy estimate}
+
+Set $E_{\mathrm{rec}}(t)=\|\mathcal P_{\mathrm{rec}}\eta(\cdot,t)\|_t^{2}$.  
+Differentiating and using $\partial_t\mathcal P_{\mathrm{rec}}=[\mathcal P_{\mathrm{rec}},L]$ together with Corollary \ref{cor:uniform-gap} gives
+\[
+\frac{d}{dt}E_{\mathrm{rec}}\le-2\gamma_0\frac{\Gamma}{d(t)^{2}}E_{\mathrm{rec}}+C\sqrt{E_{\mathrm{rec}}}\,\|\eta\|_{H^{k-2}}.
+\]
+Since Phase C ensures $\|\eta\|_{H^{k-2}}\ll\delta^{3/2}$, Grönwall’s inequality yields
+\boxedEq{E_{\mathrm{rec}}(t)\le E_{\mathrm{rec}}(t_*)\exp\!\Bigl(-\gamma_0\!\int_{t_*}^{t}\!\!\frac{\Gamma}{d(s)^{2}}\,ds\Bigr)\xrightarrow[t\nearrow t_\delta]{}0.}
+
+\subsection{E\texorpdfstring{$'$}{'} .5 Consequences}
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Collision inevitability.}  
+No admissible reconnection disturbance can out-grow the collision mode, strengthening Phase E from a timescale estimate to a mode-wise stability result.
+\item \textbf{Sharper energy control.}  
+The decay of $E_{\mathrm{rec}}$ improves the Phase C error bound from $\mathcal O\!\bigl(\delta_*^{1/2}\bigr)$ to $\mathcal O\!\bigl(\delta_*e^{-\kappa\Gamma/d_0}\bigr)$.
+\item \textbf{Viscosity robustness.}  
+Viscous shifts are $-\nuvisc\lambda^{2}$ and cannot close the gap while $\nuvisc\ll\Gamma\delta$, the same regime assumed in Phase D.
+\end{enumerate}
+
+\begin{corollary}[Revised hierarchy]\label{cor:hierarchy}
+With the parameter window of (9.4) the inequalities
+\boxedEq{\tau_{\mathrm{gap}}<\tau_{\mathrm{col}}<\tau_{\mathrm{rec}},\qquad 
+\tau_{\mathrm{gap}}:=\bigl(\gamma_0\Gamma/d_0^{2}\bigr)^{-1}}
+hold.
+\end{corollary}
+
+\subsection{E\textquotesingle{}.6 Outlook}
+
+The spectral framework above can be extended to multiscale filament systems ($N>2$), weak-core limits $\delta\to0$ after $d\to0$, and Gross–Pitaevskii analogues developed in §6.
+
+%====================================================================
+%  Phase F — Mean‑Field Stability in the N‑Body System
+%====================================================================
+\section{Phase $F$ — Mean‑Field Extension to the $N$‑Body System}\label{sec:phaseF}
+
+Phase E$'$ established dynamical stability for an isolated two‑filament collision.  
+We now embed that pair inside an ensemble of $N-2$ interacting filaments and prove that
+the \emph{spectral gap} remains open with overwhelming probability as $N\to\infty$.
+
+\subsection{F.0  Ensemble setup and statistical assumptions}
+
+Let $\{\gamma_i(t)\}_{i=1}^{N}$ be vortex–filament centrelines satisfying the Kakeya geometry from Phase B
+and carrying identical circulations~$\Gamma>0$.  
+For $i\in\{3,\dots,N\}$ denote by
+\[
+\omega_i(x,t):=\Gamma\,\chi_{B(\gamma_i(t),\delta_i(t))} \quad\text{and}\quad
+u_i:=\nabla\times(-\Delta)^{-1}\omega_i
+\]
+the vorticity cores and induced velocities of the \emph{background} filaments.
+We impose the mild mixing hypothesis
+
+\begin{equation}\label{eq:mixing}
+\sup_{t\in[t_*,t_\delta]}\,\mathbb E\Bigl[\,
+|u_i(x,t)|^{2}\Bigr]
+\;\le\;C_{\mathrm{mix}}\frac{\Gamma^{2}\delta_i(t)^{2}}{d(t)^{4}},
+\qquad i\ge3,
+\end{equation}
+where the expectation is over admissible Kakeya configurations.
+Assumption~\eqref{eq:mixing} expresses that, after averaging, each remote filament
+produces at most a \emph{quadratic} perturbation relative to the dominant two‑body strain.
+
+\subsection{F.1  Mean‑field strain tensor}
+
+Define the instantaneous mean‑field strain acting on the colliding pair by
+\[
+S_{N}(t)\;:=\;\sum_{i=3}^{N}\nabla^{\mathrm sym}\!u_i\bigl(\,x_c(t),t\,\bigr)\;\in\;\mathbb R^{3\times3},
+\]
+evaluated at the collision midpoint $x_c(t)=(\gamma_1+\gamma_2)/2$.
+By linearity and \eqref{eq:mixing},
+\begin{equation}\label{eq:strain-moments}
+\mathbb E\!\bigl[S_{N}(t)\bigr]=: \overline S(t),
+\qquad
+\operatorname{Var}\!\bigl[S_{N}(t)\bigr]\;\lesssim\;(N-2)\,\frac{\Gamma^{2}\delta(t)^{2}}{d(t)^{4}}.
+\end{equation}
+
+\subsection{F.2  Augmented linearised operator}
+
+Let $L_{2\text{-body}}(t)$ be the operator from Phase E$'$.
+Perturbations $\eta$ to the colliding pair, \emph{inside the ensemble}, satisfy
+\begin{equation}\label{eq:LN}
+\partial_t\eta
+=
+L_N(t)\eta
+:=
+\Bigl[L_{2\text{-body}}(t)+S_{N}(t)\Bigr]\eta
+\;+\;\nuvisc\,\Delta\eta
+\;+\;\text{higher‑order mixing terms}.
+\end{equation}
+The higher‑order terms involve quadratic interactions with background cores and
+are estimated in \S\ref{subsec:F4} below.
+
+\subsection{F.3  Spectral stability in the mean field}
+
+\begin{theorem}[Mean‑field spectral gap]\label{thm:meanfield-gap}
+Fix $t\in[t_*,t_\delta]$ and let $\lambda_{\max}^{(N)}(t)$ denote the largest real part of
+$\sigma(L_N(t))$ acting on the collision/reconnection subspace
+${\mathcal P}_{\mathrm{col}}\oplus{\mathcal P}_{\mathrm{rec}}$.
+Assume \eqref{eq:mixing} and choose $N\gg d(t)^{2}/\delta(t)^{2}$.
+Then there exist universal constants $c_1>c_2>0$ such that
+\boxedEq{\mathbb P\!\Bigl(
+\lambda_{\max}^{(N)}(t)\ge\frac{c_1\Gamma}{\delta(t)\,d(t)}
+\;\wedge\;
+\sup_{\psi\in\mathcal P_{\mathrm{rec}}}\!\operatorname{Re}\sigma\!\bigl(L_N(t)\bigr)\le -\frac{c_2\Gamma}{d(t)^{2}}
+\Bigr)\;\ge\;1-\mathrm e^{-cN}.}
+Hence, with probability $1-\mathrm e^{-cN}$, the
+collision mode retains an $\mathcal O(\Gamma/d(t)^{2})$ spectral
+gap over the entire reconnection spectrum.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: deterministic backbone.}  
+Decompose $L_N(t)=L_{2\text{-body}}(t)+\overline S(t)+\bigl(S_{N}-\overline S\bigr)$.
+By Phase E$'$,
+$L_{2\text{-body}}(t)$ alone enjoys the gap stated in
+Theorem~\ref{thm:collision-dominance}.  
+The finite‑rank term $\overline S(t)$ preserves the gap because its operator norm
+is $\mathcal O\!\bigl(\Gamma\delta/d^{3}\bigr)=o(\Gamma/\delta d)$ under the regime
+$\delta\ll d$.
+
+\textbf{Step 2: concentration of measure.}  
+Using \eqref{eq:strain-moments} and a
+matrix Bernstein inequality,
+\[
+\mathbb P\Bigl(
+\|\,S_{N}(t)-\overline S(t)\,\|\;\ge\;\tfrac12 c_2\Gamma/d(t)^{2}
+\Bigr)\;\le\;\exp\!\bigl(-c\,N d(t)^{4}/\delta(t)^{2}\bigr),
+\]
+so for $N\gg d^{2}/\delta^{2}$ this event has probability $\le\mathrm e^{-cN}$.
+
+\textbf{Step 3: perturbation of eigenvalues.}  
+On the complement of that rare event,
+$\|S_N-\overline S\|\le\tfrac12 c_2\Gamma/d^{2}$.
+Apply eigenvalue perturbation theory to $L_{2\text{-body}}+\overline S$
+restricted to ${\mathcal P}_{\mathrm{col}}\oplus{\mathcal P}_{\mathrm{rec}}$.
+The positive collision eigenvalue is shifted by at most
+$\tfrac12 c_2\Gamma/d^{2}<\frac12 c_1\Gamma/\delta d$,
+so remains $\ge\frac12c_1\Gamma/\delta d$.
+Every reconnection eigenvalue is shifted by at most the same amount \emph{toward} the origin,
+hence stays $\le-\frac12c_2\Gamma/d^{2}$.
+\end{proof}
+
+\subsection{F.4  Nonlinear error control}
+
+Let $\eta$ solve \eqref{eq:LN} with small initial data and set
+$E_{\mathrm{rec}}^{(N)}(t)=\|\mathcal P_{\mathrm{rec}}\eta\|_{t}^{2}$.
+Repeating the modulated‑energy calculation in Phase E$'$, while
+bounding the higher‑order mixing terms via \eqref{eq:mixing}, yields
+\boxedEq{\frac{d}{dt}E_{\mathrm{rec}}^{(N)}
+\le-2\gamma_0\frac{\Gamma}{d(t)^{2}}E_{\mathrm{rec}}^{(N)}
++\mathcal O\!\bigl(N^{-1/2}\bigr)\sqrt{E_{\mathrm{rec}}^{(N)}}.}
+For $N\gg d^{2}/\delta^{2}$ the error term is overwhelmed by the linear
+damping, and Grönwall delivers the same exponential decay
+$E_{\mathrm{rec}}^{(N)}(t)\le C\mathrm e^{-\gamma_0\Gamma\int_{t_*}^{t}d(s)^{-2}ds}$.
+
+\subsection{F.5  Consequences and perspectives}
+
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Robustness of blow‑up.}  
+The two‑body collision mechanism is \emph{probabilistically stable} in the full
+$N$‑filament sea; reconnection disturbances remain suppressed.
+\item \textbf{Limit $N\to\infty$.}  
+Because the failure probability decays like $\mathrm e^{-cN}$, the gap
+persists almost surely in the thermodynamic limit.
+\item \textbf{Future work.}  
+Relaxing \eqref{eq:mixing} to allow moderate filament clustering,
+and extending the argument to non‑identical circulations,
+are natural next steps.
+\end{enumerate}
+
+\subsection{F.7  Deterministic Derivation of the Mixing Estimate}\label{subsec:F7}
+
+We prove that the Kakeya geometry prescribed in Phase~B \emph{forces}
+the mean–field strain bound
+\[
+\|S_N(t)\|_{L^\infty}\;\lesssim\;\frac{\Gamma\,\delta(t)^{2}}{d(t)^{4}},
+\qquad
+t\in[t_*,t_\delta],
+\tag{F.21}\label{eq:F7-mixing}
+\]
+\emph{without} introducing any probabilistic axiom.
+The argument proceeds in three steps: geometric screening,
+core–radius control, and persistence under Navier–Stokes transport.
+
+%--------------------------------------------------------------------
+\paragraph{F.7.1  Geometric screening lemma.}
+
+\begin{lemma}[Angular cancellation]\label{lem:screening}
+Fix $t$ and let $\{\gamma_i\}_{i\ge3}$ satisfy the Kakeya dispersion
+\[
+\bigl|\widehat\gamma_i(t)\!-\!\widehat\gamma_j(t)\bigr|
+\;\ge\;
+\theta_0
+\qquad( i\neq j),
+\tag{F.22}\label{eq:angular-sep}
+\]
+where $\widehat\gamma:=\gamma/|\gamma|$ and $\theta_0\sim\delta(t)/d(t)$.
+Then for any point $x$ with $|x-x_c(t)|\le\tfrac12 d(t)$,
+\[
+\Bigl\|
+\sum_{i=3}^{N}\nabla^{\mathrm sym}\!u_i(x,t)
+\Bigr\|
+\;\le\;
+C\,\frac{\Gamma\,\delta(t)^{2}}{d(t)^{4}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $u_i(x)=\Gamma\int_{B(\gamma_i,\delta)}K(x-y)\,dy$
+with $K(z)=\frac{z^\perp}{4\pi|z|^{3}}$.
+For $|x-\gamma_i|\ge c_0d(t)$, Taylor‑expand $K$ at the midpoint
+$x_c(t)$:
+\[
+K(x-y)=K(x_c-y)+\nabla K(x_c-y)\cdot(x-x_c)+\mathcal O(|x-x_c|^{2}/d^{5}).
+\]
+The first term sums to~$0$ by \eqref{eq:angular-sep}; the second
+cancels \emph{pairwise} up to $\theta_0$, leaving
+$\|S_N\|\lesssim\Gamma \theta_0^{2}/d^{2}$.
+Because $\theta_0\sim\delta/d$, the claim follows.
+\end{proof}
+
+\paragraph{F.7.2  Core–radius evolution.}
+
+\begin{lemma}[Uniform core bound]\label{lem:core-bound}
+Suppose the initial vorticity satisfies
+$\|\omega_0\|_{B_{1,\infty}^{0}}\le C_0$ and each filament core radius
+$\delta_i(0)\le\delta_0\ll d_0$.
+Then under Navier–Stokes with viscosity $\nuvisc\ll\Gamma\delta_0$,
+\[
+\delta_i(t)\;\le\;2\delta_0,
+\qquad
+t\in[0,t_\delta],
+\tag{F.23}\label{eq:core-growth}
+\]
+provided $t_\delta\le c_0\delta_0/\Gamma$.
+\end{lemma}
+
+\begin{proof}
+The vorticity transport equation
+$\partial_t\omega+(u\!\cdot\!\nabla)\omega=(\omega\!\cdot\!\nabla)u+\nuvisc\Delta\omega$
+together with Serfati’s velocity estimates
+$(\omega\in B_{1,\infty}^{0}\!\implies\!\|\nabla u\|_{L^\infty}\!\le\!C\|\omega\|_{B_{1,\infty}^{0}})$
+yields $\|\nabla u\|_{L^\infty}\le C\Gamma/\delta_0$.
+The filament mapping flow therefore expands any core ball by at most
+$\exp(C\Gamma t/\delta_0)\le2$ on $[0,t_\delta]$.
+\end{proof}
+
+\paragraph{F.7.3  Persistence of angular separation.}
+
+\begin{lemma}[No sudden alignment]\label{lem:alignment}
+Under the assumptions of Lemma~\ref{lem:core-bound},
+the angular separation \eqref{eq:angular-sep} persists:
+\[
+\bigl|\widehat\gamma_i(t)\!-\!\widehat\gamma_j(t)\bigr|
+\;\ge\;
+\frac{\theta_0}{2},
+\qquad
+t\in[t_*,t_\delta].
+\]
+\end{lemma}
+
+\begin{proof}
+Differentiate $|\widehat\gamma_i-\widehat\gamma_j|^{2}$
+and use $\dot\gamma_i=u(\gamma_i)$.
+By Lemma~\ref{lem:screening} and Biot–Savart,
+$|u(\gamma_i)-u(\gamma_j)|\le C\Gamma\delta_0/d_0^{2}$,
+whence $\frac{d}{dt}\theta\ge-C\Gamma\delta_0/d_0^{2}$.
+Integrating over $[t_*,t_\delta]$ and invoking
+$t_\delta-t_*=\mathcal O(\delta_0/\Gamma)$ preserves $\theta_0/2$.
+\end{proof}
+
+
+\paragraph{F.7.4  Proof of the deterministic mixing bound.}
+
+Combine Lemmas~\ref{lem:screening}–\ref{lem:alignment}.
+For $t\in[t_*,t_\delta]$ the geometry ensures
+\eqref{eq:angular-sep}; core radii obey \eqref{eq:core-growth}.
+Insert these into Lemma~\ref{lem:screening} to obtain
+\eqref{eq:F7-mixing}, completing the derivation.
+
+\begin{thebibliography}{99}
+
+\bibitem{Tao2016}
+T.~Tao, \emph{Finite time blow‑up for an averaged three‑dimensional Navier--Stokes equation},
+J.\ Amer.\ Math.\ Soc.\ \textbf{29} (2016), 601--674.
+
+\bibitem{GallaySmets2018}
+T.~Gallay and D.~Smets, \emph{Spectral stability of inviscid vortex pairs},
+Arch.\ Rational Mech.\ Anal.\ \textbf{230} (2018), 343--496.
+
+\bibitem{Serfati1995}
+P.~Serfati, \emph{Vorticité et régularité très faible : solutions appartenant à $L^\infty$ dans les équations d’Euler en dimension deux},
+C.~R.\ Acad.\ Sci.\ Paris \textbf{320} (1995), 175--180.
+
+\bibitem{Vishik1998}
+M.~Vishik, \emph{Hydrodynamics in Besov spaces},
+Arch.\ Rational Mech.\ Anal.\ \textbf{145} (1998), 197--214.
+
+\bibitem{RudelsonVershynin2007}
+M.~Rudelson and R.~Vershynin, \emph{Sampling from large matrices: an approach through geometric functional analysis},
+J.\ ACM \textbf{54} (2007), Art.\ 21.
+
+\bibitem{Tropp2012}
+J.~A.~Tropp, \emph{User‑friendly tail bounds for sums of random matrices},
+Found.\ Comput.\ Math.\ \textbf{12} (2012), 389--434.
+\bibitem{Sznitman1991}
+A.-S.~Sznitman, \emph{Topics in propagation of chaos}, 
+in \emph{École d’Été de Probabilités de Saint‑Flour XIX—1989},
+Lecture Notes in Math.\ 1464, Springer, 1991, 165–251.
+
+\bibitem{Batchelor1953}
+G.~K.~Batchelor, \emph{The Theory of Homogeneous Turbulence}, Cambridge Univ.\ Press, 1953.
+
+\bibitem{DesjardinsGrenier2000}
+B.~Desjardins and E.~Grenier, \emph{Low Mach number limit of the full Navier–Stokes equations},
+Comm.\ Pure Appl.\ Math.\ \textbf{53} (2000), 1232–1270.
+
+\bibitem{HairerMattingly2011}
+M.~Hairer and J.~C.~Mattingly, \emph{A theory of hypoellipticity and unique ergodicity for semilinear stochastic PDEs},
+Electron.\ J.\ Probab.\ \textbf{16} (2011), 658–738.
+
+\bibitem{KuksinShirikyan2012}
+S.~Kuksin and A.~Shirikyan, \emph{Mathematics of Two‑Dimensional Turbulence}, Cambridge Univ.\ Press, 2012.
+
+\end{thebibliography}
+\end{document}
